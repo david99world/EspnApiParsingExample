@@ -8,6 +8,7 @@ This project uses Google GSON to traverse the JSON tree to print out all players
 This doesn't parse the result into a dumb object representation, it's more of a tester project if anything.
 
 Free Licence : 
+==============
 
 This is free and unencumbered software released into the public domain.
 
