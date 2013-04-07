@@ -9,7 +9,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 /**
- * @author David Gray This class is simply an example of how to parse the Json
+ * @author David Gray 
+ * 
+ * This class is simply an example of how to parse the Json
  *         API for ESPN.
  */
 public class EspnParser {
@@ -22,18 +24,23 @@ public class EspnParser {
 	 *            for main method.
 	 */
 	public static void main(final String[] args) {
-		try {
-			final JsonArray athletes = getAthletesJsonArray();
-			for (final JsonElement athlete : athletes) {
-				System.out.println(athlete.getAsJsonObject().get("fullName"));
+		for (int offset = 1; offset < 650; offset = offset + 50) {
+			try {
+				final JsonArray athletes = getAthletesJsonArray(offset);
+				for (final JsonElement athlete : athletes) {
+					System.out.println(athlete.getAsJsonObject()
+							.get("fullName"));
+				}
+				Thread.sleep(100);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
-	private static JsonArray getAthletesJsonArray() throws Exception {
-		final String json = readUrl(getUrl());
+	private static JsonArray getAthletesJsonArray(final int offset)
+			throws Exception {
+		final String json = readUrl(getUrl(offset));
 		final JsonArray sports = getSportsJsonArray(json);
 		final JsonElement league = sports.get(0);
 		return league.getAsJsonObject().get("leagues").getAsJsonArray().get(0)
@@ -46,8 +53,8 @@ public class EspnParser {
 		return sports;
 	}
 
-	private static String getUrl() {
-		return APIURL + APIKEY;
+	private static String getUrl(final int offset) {
+		return APIURL + APIKEY + "&offset=" + offset;
 	}
 
 	private static String readUrl(final String urlString) throws Exception {
